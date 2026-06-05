@@ -8,6 +8,7 @@
 class ClassFriendCollection : public Person {
 	private:
 		//学生信息
+		string ID;
 		string grade;
 		string department;
 		string major;
@@ -61,6 +62,7 @@ class ClassFriendCollection : public Person {
 		string getPhone() const { return phone; }
 		string getQQ() const { return qq; }
 		string getEmail() const { return email; }
+		string getID() const { return ID; }
 };
 
 

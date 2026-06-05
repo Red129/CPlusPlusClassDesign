@@ -30,6 +30,8 @@ class Manager{
 
 		//排序stringline
 		void slsort();
+		//比起来小
+		bool cmps(const Node* a, const Node* b);
 		
 		//增加删除
 		void add();

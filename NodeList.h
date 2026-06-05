@@ -30,6 +30,7 @@ class NodeList{
 
 		//接口
 		Node* getHead() const { return head; }
+		void setHead(Node* sorted){head = sorted;}
 
 };
 

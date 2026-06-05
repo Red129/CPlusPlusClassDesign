@@ -18,9 +18,9 @@ void Manager::saveToFile(){
     Node* nowNode = nl.getHead();
     while(nowNode != nullptr){
         //将结点中的数据转换为统一形式的字符串，并写入文件
-        fout << nowNode -> data.toStringLine() << endl;
+        fout << nowNode->data.toStringLine() << endl;
         //下一个结点
-        nowNode = nowNode -> next;
+        nowNode = nowNode->next;
     }
     //关闭文件流
     fout.close();
@@ -55,10 +55,10 @@ void Manager::displayAll(){
     Node* nowNode = nl.getHead();
     while(nowNode != nullptr){
         //调用
-        nowNode -> data.display();
+        nowNode->data.display();
         cout << "-----------------------------" << endl;
         //下一个结点
-        nowNode = nowNode -> next;
+        nowNode = nowNode->next;
     }
 }
 
@@ -76,12 +76,102 @@ void Manager::staDisplay(){
            (flag == "院系" && nowNode->data.getDepartment() == flag) ||
            (flag == "专业" && nowNode->data.getMajor() == flag) || 
            (flag == "班级" && nowNode->data.getClassNum() == flag)){
-            nowNode -> data.display();
+            nowNode->data.display();
             cout << "-----------------------------" << endl;
         }
         //下一个结点
-        nowNode = nowNode -> next;
+        nowNode = nowNode->next;
     }
+}
+
+//查询
+void Manager::search(){
+    //分流，模糊查询和精确查询
+    int t;
+    cout << "请选择查询方式：1.模糊查询 2.精确查询" << endl;
+    cin >> t;
+    string keyword;
+    
+    //定义一个结点指针，遍历链表
+    Node* nowNode = nl.getHead();
+    while(nowNode != nullptr){
+        //模糊查询，包含关系
+        if(t == 1){
+            cout << "请输入查询关键词：" << endl;
+            cin >> keyword;
+            if(nowNode->data.getName().find(keyword) != string::npos ||
+               nowNode->data.getGrade().find(keyword) != string::npos ||
+               nowNode->data.getDepartment().find(keyword) != string::npos ||
+               nowNode->data.getMajor().find(keyword) != string::npos ||
+               nowNode->data.getClassNum().find(keyword) != string::npos ||
+               nowNode->data.getAddress().find(keyword) != string::npos ||
+               nowNode->data.getCompany().find(keyword) != string::npos ||
+               nowNode->data.getPhone().find(keyword) != string::npos ||
+               nowNode->data.getQQ().find(keyword) != string::npos ||
+               nowNode->data.getEmail().find(keyword) != string::npos){
+                nowNode->data.display();
+                cout << "-----------------------------" << endl;
+            }
+        }else if(t ==2){
+            //精确查找，完全匹配
+            //输入查询关键词
+            cout << "请输入学号或者姓名：" << endl;
+            cin >> keyword;
+            if(nowNode->data.getName() == keyword || nowNode->data.getID() == keyword){
+                nowNode->data.display();
+                cout << "-----------------------------" << endl;
+            }
+        }
+    }
+}
+
+//sort，插入排序
+//compare函数
+bool Manager::cmps(const Node* a,const Node* b){
+    if(a->data.getGrade() < b->data.getGrade()){
+        return true;
+    }else if(a->data.getGrade() == b->data.getGrade()){
+        if(a->data.getName() < b->data.getName()){
+            return true;
+        }else {return false;}
+    }else {return false;}
+}
+
+void Manager::slsort(){
+    if(nl.getHead() == nullptr || nl.getHead()->next == nullptr){return;}
+    Node* sorted = nullptr;//已经有序的链表头指针，插入点
+    Node* nowNode = nl.getHead();
+    while(nowNode != nullptr){
+        //进行排序
+        Node* tempNext = nowNode->next;
+        //比较当前与下一个，还有sorted为空的情况
+        if(sorted == nullptr || cmps(nowNode,sorted)){
+                //交换传递
+                nowNode->next = sorted;
+                sorted = nowNode;
+        }
+        //在已经排序的进行比较
+        else{
+            //定义一个进入循环遍历的sorted链表
+            Node* sortNowNd = sorted;
+            //遍历比较已经排序的，进行插入
+            //从第二个开始
+            while(sortNowNd->next != nullptr && cmps(sortNowNd, nowNode)){
+                //如果sort里比nowNode这个结点小，往后srot找，直到不符合
+                //sortNowNd后移
+                sortNowNd = sortNowNd->next;
+            }
+            //把nowNode后面和刚好大于的接上
+            nowNode->next = sortNowNd->next;
+            //再将这段拼进小的后面
+            sortNowNd->next = nowNode;
+        }
+        //进入下一轮比较
+        nowNode = tempNext;
+    }
+    //将sorted变为新的头结点
+    //需要接口，sethead
+    nl.setHead(sorted);
 }
 
 //add函数
