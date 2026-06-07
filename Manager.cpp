@@ -66,21 +66,25 @@ void Manager::displayAll(){
 void Manager::staDisplay(){
     //读入筛选条件
     string flag;
+    int count = 0;
     cout << "请输入筛选条件（年级/院系/专业/班级）：" << endl;
-    cin >> flag;
-    //定义一个结点指针，遍历链表
-    Node* nowNode = nl.getHead();
-    while(nowNode != nullptr){
-        //根据条件筛选并展示
-        if((flag == "年级" && nowNode->data.getGrade() == flag) ||
-           (flag == "院系" && nowNode->data.getDepartment() == flag) ||
-           (flag == "专业" && nowNode->data.getMajor() == flag) || 
-           (flag == "班级" && nowNode->data.getClassNum() == flag)){
-            nowNode->data.display();
-            cout << "-----------------------------" << endl;
+    while(cin >> flag){
+        //定义一个结点指针，遍历链表
+        Node* nowNode = nl.getHead();
+        while(nowNode != nullptr){
+            //根据条件筛选并展示
+            if((flag == "年级" && nowNode->data.getGrade() == flag) ||
+            (flag == "院系" && nowNode->data.getDepartment() == flag) ||
+            (flag == "专业" && nowNode->data.getMajor() == flag) || 
+            (flag == "班级" && nowNode->data.getClassNum() == flag)){
+                nowNode->data.display();
+                count++;
+                cout << "-----------------------------" << endl;
+            }
+            //下一个结点
+            nowNode = nowNode->next;
         }
-        //下一个结点
-        nowNode = nowNode->next;
+        cout << "以上是与" << flag << "有关的，共查找到" << count << "条有关信息\n";
     }
 }
 
@@ -188,4 +192,26 @@ void Manager::rmv(){
     cin >> targetName;
     //调用链表的删除函数
     nl.deleteCM(targetName);
+}
+
+void Manager::modify(){
+    cout << "setting: \n
+    1. 增加校友\n
+    2. 删除校友\n
+    0. back\n";
+    cout << "请选择："；
+    int a;
+    
+    while(cin >> a){
+        if(a == 1){
+            add();
+        }else if(a == 2){
+            rmv();
+        }else if(a == 0){
+            return;
+        }else{
+            cout << "错误，请重新输入！\n";
+            continue;
+        }
+    }
 }

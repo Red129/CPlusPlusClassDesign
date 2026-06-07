@@ -36,6 +36,7 @@ class Manager{
 		//增加删除
 		void add();
 		void rmv();
+		void modify();
 };
 
 
