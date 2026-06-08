@@ -10,12 +10,14 @@ class System{
 		//实现调用
 		Manager manager;
 	public:
-		System(){};
+		System();
 		//展示出菜单页面，负责输入，输出，入口和出口
 		void menu();
 		void run();
 		bool isNum(const string& s);
 		int stringToInt(const string& s);
+		void pause();//为了有更好的交互体验，
+		//发现在进行操作后直接跳转到了菜单
 };
 
 #endif

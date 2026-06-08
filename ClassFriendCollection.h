@@ -64,6 +64,9 @@ class ClassFriendCollection : public Person {
 		string getQQ() const { return qq; }
 		string getEmail() const { return email; }
 		string getID() const { return ID; }
+
+		//重载输出符
+		friend ostream& operator<<(ostream& out, const ClassFriendCollection& cm);
 };
 
 

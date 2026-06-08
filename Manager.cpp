@@ -32,7 +32,7 @@ void Manager::fromFile(){
     ifstream fin("classFriends.txt");
     //判断文件是否成功打开
     if(!fin){
-        cout << "文件打开失败！" << endl;
+        cout << "文件未初始化或打开失败！" << endl;
         return;
     }
     string line;
@@ -51,15 +51,16 @@ void Manager::fromFile(){
 
 //display
 void Manager::displayAll(){
-    //定义一个结点指针，遍历链表
-    Node* nowNode = nl.getHead();
-    while(nowNode != nullptr){
-        //调用
-        nowNode->data.display();
-        cout << "-----------------------------" << endl;
-        //下一个结点
-        nowNode = nowNode->next;
-    }
+    // //定义一个结点指针，遍历链表
+    // Node* nowNode = nl.getHead();
+    // while(nowNode != nullptr){
+    //     //调用
+    //     nowNode->data.display();
+    //     cout << "-----------------------------" << endl;
+    //     //下一个结点
+    //     nowNode = nowNode->next;
+    // }
+    nl.display();
 }
 
 //筛选展示statistic
@@ -68,33 +69,34 @@ void Manager::staDisplay(){
     string flag;
     int count = 0;
     cout << "请输入筛选条件（年级/院系/专业/班级）：" << endl;
-    while(cin >> flag){
-        string keywords;
-        cin >> keywords;
-        //定义一个结点指针，遍历链表
-        Node* nowNode = nl.getHead();
-        while(nowNode != nullptr){
-            //根据条件筛选并展示
-            if((flag == "年级" && nowNode->data.getGrade() == keywords) ||
-            (flag == "院系" && nowNode->data.getDepartment() == keywords) ||
-            (flag == "专业" && nowNode->data.getMajor() == keywords) || 
-            (flag == "班级" && nowNode->data.getClassNum() == keywords)){
-                nowNode->data.display();
-                count++;
-                cout << "-----------------------------" << endl;
-            }
-            //下一个结点
-            nowNode = nowNode->next;
+    cin >> flag;
+    string keywords;
+    cout << "请输入关键词：";
+    cin >> keywords;
+    //定义一个结点指针，遍历链表
+    Node* nowNode = nl.getHead();
+    while(nowNode != nullptr){
+        //根据条件筛选并展示
+        if((flag == "年级" && nowNode->data.getGrade() == keywords) ||
+        (flag == "院系" && nowNode->data.getDepartment() == keywords) ||
+        (flag == "专业" && nowNode->data.getMajor() == keywords) || 
+        (flag == "班级" && nowNode->data.getClassNum() == keywords)){
+            nowNode->data.display();
+            count++;
+            cout << "-----------------------------" << endl;
         }
-        cout << "以上是与" << flag << "有关的，共查找到" << count << "条有关信息\n";
+        //下一个结点
+        nowNode = nowNode->next;
     }
+    cout << "以上是与" << flag << "有关的，共查找到" << count << "条有关信息\n";
+
 }
 
 //查询
 void Manager::search(){
     //分流，模糊查询和精确查询
     int t;
-    cout << "请选择查询方式：1.模糊查询 2.精确查询" << endl;
+    cout << "请选择查询方式：\n1. 模糊查询 \n2. 精确查询\n 0. 退出" << endl;
     cin >> t;
     string keyword;
     
@@ -134,7 +136,9 @@ void Manager::search(){
             //下一个结点
             nowNode = nowNode->next;
         }
-    } else{
+    }else if(t ==0){
+        return;
+    }else{
         cout << "输入错误，请重新选择查询方式！" << endl;
     }
 }
@@ -203,6 +207,7 @@ void Manager::add(){
 void Manager::rmv(){
     //定义一个字符串变量，存储要删除的学号
     string targetID;
+    cout << "请输入要删除的校友的学号：";
     cin >> targetID;
     //调用链表的删除函数
     nl.deleteCM(targetID);
@@ -212,17 +217,41 @@ void Manager::modify(){
     cout << "setting: \n1. 增加校友\n2. 删除校友\n0. back\n";
     cout << "请选择：";
     int a;
-    
-    while(cin >> a){
-        if(a == 1){
-            add();
-        }else if(a == 2){
-            rmv();
-        }else if(a == 0){
-            return;
-        }else{
-            cout << "错误，请重新输入！\n";
-            continue;
+
+    while(true)
+    {
+        cin >> a;
+        switch(a)
+        {
+            case 1:
+                add();
+                return;
+
+            case 2:
+                rmv();
+                return;
+
+            case 0:
+                return;
+
+            default:
+                cout << "错误，请重新输入！\n";
         }
     }
+}
+
+void Manager::slDisplay(){
+    char choice;
+    cin >> choice;
+    if(choice == 'y' || choice == 'Y'){
+        if(nl.getHead() == nullptr){return;}
+        Node* nowNode = nl.getHead();
+        cout << "|姓名|性别|生日|学号|年级|院系|专业|班级|地址|公司|电话|QQ号|邮箱|\n";
+        while(nowNode != nullptr){
+            cout << nowNode->data;
+            nowNode = nowNode->next;
+        }
+    }else if(choice == 'n' || choice == 'N'){
+    }
+    return;
 }

@@ -29,7 +29,7 @@ void Person::input(){
     cin >> sex;
     checkSex();//检查性别
 
-    cout << "请输入生日：";
+    cout << "请输入生日(格式: YYYY/MM/DD)：";
     cin >> birthday;
     checkBirth();//检查生日
 
@@ -39,7 +39,7 @@ void Person::input(){
 void Person::display() const {
     cout << "姓名：" << name << endl;
     cout << "性别：" << sex << endl;
-    cout << "生日(格式: YYYY/MM/DD)：" << birthday << endl;
+    cout << "生日：" << birthday << endl;
 }
 //信息检查
 //name
@@ -62,7 +62,8 @@ void Person::checkSex(){
 
 //birthday
 void Person::checkBirth(){
-    while(birthday.size() != 10 || birthday[4] != '/' || birthday[7] != '/'){
+    while(birthday.size() != 10 || birthday[4] != '/' || birthday[7] != '/' 
+    || !isdigit(birthday[0]) || !isdigit(birthday[1]) || !isdigit(birthday[2]) || !isdigit(birthday[3])){
         cout << "生日输入有误，格式为YYYY/MM/DD，请重新输入" << endl;
         cin >> birthday;
     }

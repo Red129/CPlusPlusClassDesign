@@ -61,6 +61,7 @@ void ClassFriendCollection::input() {
     cout << "请输入邮箱：(example:xxxxxxxx@qq.com)";
     cin >> email;
     checkEmail();
+    return;
 }
 
 //检查函数
@@ -118,7 +119,7 @@ void ClassFriendCollection::checkEmail()
 }
 
 void ClassFriendCollection::checkID(){
-    while(ID.empty() && !isNumber(ID)){
+    while(ID.empty() || !isNumber(ID)){
         cout << "错误，请重新输入：";
         cin >> ID;
     }
@@ -150,7 +151,7 @@ void ClassFriendCollection::display(){
 
 //统一形式
 string ClassFriendCollection::toStringLine(){
-    return name + "|" + sex + "|" + birthday + "|"
+    return name + "|" + sex + "|" + birthday + "|" + ID + "|"
 	    + grade + "|" + department + "|" + major + "|" + classNum + "|"
 	    + address + "|" + company + "|"
 	    + phone + "|" + qq + "|" + email;
@@ -167,6 +168,7 @@ void ClassFriendCollection::fromStringLine(string line){
     getline(ss, name, '|');
     getline(ss, sex, '|');
     getline(ss, birthday, '|');
+    getline(ss, ID, '|');
     getline(ss, grade, '|');
     getline(ss, department, '|');
     getline(ss, major, '|');
@@ -176,4 +178,13 @@ void ClassFriendCollection::fromStringLine(string line){
     getline(ss, phone, '|');
     getline(ss, qq, '|');
     getline(ss, email, '|');
+}
+
+//重载的实现
+ostream& operator<<(ostream& out, const ClassFriendCollection& cm){
+    cout << "|" << cm.getName() << "|" << cm.getSex() << "|" << cm.getBirthday() << "|" << cm.getID() << 
+    "|" << cm.getGrade() << "|" << cm.getDepartment() << "|" << cm.getMajor() << "|" << cm.getClassNum() << "|"
+    << cm.getAddress() << "|" << cm.getCompany() << "|" 
+    << cm.getPhone() << "|" << cm.getQQ() << "|" << cm.getEmail() << "|" << endl;
+    return out;
 }

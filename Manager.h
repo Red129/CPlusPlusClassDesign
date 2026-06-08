@@ -23,6 +23,8 @@ class Manager{
 		void displayAll();
 		//筛选展示statistic
 		void staDisplay();
+		//展示排序stringLine
+		void slDisplay();
 
 		//查询
 		//包含模糊查询和精确查询
