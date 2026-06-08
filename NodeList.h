@@ -22,9 +22,9 @@ class NodeList{
 		//增删查现函数
 		//const 传递防止修改参数
 		void insertCM(const ClassFriendCollection& cm);
-		void deleteCM(const string& name);
+		void deleteCM(const string& ID);
 
-		Node* find(const string& name) const;
+		Node* find(const string& ID) const;
 
 		void display();
 

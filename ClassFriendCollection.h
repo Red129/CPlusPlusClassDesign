@@ -42,6 +42,7 @@ class ClassFriendCollection : public Person {
 		void checkPhone();
 		void checkQQ();
 		void checkEmail();
+		void checkID();
 
 		// 输出展示
 		void display();

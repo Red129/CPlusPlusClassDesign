@@ -69,14 +69,16 @@ void Manager::staDisplay(){
     int count = 0;
     cout << "请输入筛选条件（年级/院系/专业/班级）：" << endl;
     while(cin >> flag){
+        string keywords;
+        cin >> keywords;
         //定义一个结点指针，遍历链表
         Node* nowNode = nl.getHead();
         while(nowNode != nullptr){
             //根据条件筛选并展示
-            if((flag == "年级" && nowNode->data.getGrade() == flag) ||
-            (flag == "院系" && nowNode->data.getDepartment() == flag) ||
-            (flag == "专业" && nowNode->data.getMajor() == flag) || 
-            (flag == "班级" && nowNode->data.getClassNum() == flag)){
+            if((flag == "年级" && nowNode->data.getGrade() == keywords) ||
+            (flag == "院系" && nowNode->data.getDepartment() == keywords) ||
+            (flag == "专业" && nowNode->data.getMajor() == keywords) || 
+            (flag == "班级" && nowNode->data.getClassNum() == keywords)){
                 nowNode->data.display();
                 count++;
                 cout << "-----------------------------" << endl;
@@ -98,34 +100,42 @@ void Manager::search(){
     
     //定义一个结点指针，遍历链表
     Node* nowNode = nl.getHead();
-    while(nowNode != nullptr){
         //模糊查询，包含关系
-        if(t == 1){
-            cout << "请输入查询关键词：" << endl;
-            cin >> keyword;
+    if(t == 1){
+        cout << "请输入查询关键词：" << endl;
+        cin >> keyword;
+        while(nowNode != nullptr){
             if(nowNode->data.getName().find(keyword) != string::npos ||
-               nowNode->data.getGrade().find(keyword) != string::npos ||
-               nowNode->data.getDepartment().find(keyword) != string::npos ||
-               nowNode->data.getMajor().find(keyword) != string::npos ||
-               nowNode->data.getClassNum().find(keyword) != string::npos ||
-               nowNode->data.getAddress().find(keyword) != string::npos ||
-               nowNode->data.getCompany().find(keyword) != string::npos ||
-               nowNode->data.getPhone().find(keyword) != string::npos ||
-               nowNode->data.getQQ().find(keyword) != string::npos ||
-               nowNode->data.getEmail().find(keyword) != string::npos){
+            nowNode->data.getGrade().find(keyword) != string::npos ||
+            nowNode->data.getDepartment().find(keyword) != string::npos ||
+            nowNode->data.getMajor().find(keyword) != string::npos ||
+            nowNode->data.getClassNum().find(keyword) != string::npos ||
+            nowNode->data.getAddress().find(keyword) != string::npos ||
+            nowNode->data.getCompany().find(keyword) != string::npos ||
+            nowNode->data.getPhone().find(keyword) != string::npos ||
+            nowNode->data.getQQ().find(keyword) != string::npos ||
+            nowNode->data.getEmail().find(keyword) != string::npos){
                 nowNode->data.display();
                 cout << "-----------------------------" << endl;
             }
-        }else if(t ==2){
-            //精确查找，完全匹配
-            //输入查询关键词
-            cout << "请输入学号或者姓名：" << endl;
-            cin >> keyword;
+            //下一个结点
+            nowNode = nowNode->next;
+        }
+    }else if(t ==2){
+        //精确查找，完全匹配
+        //输入查询关键词
+        cout << "请输入学号或者姓名：" << endl;
+        cin >> keyword;
+        while(nowNode != nullptr){
             if(nowNode->data.getName() == keyword || nowNode->data.getID() == keyword){
                 nowNode->data.display();
                 cout << "-----------------------------" << endl;
             }
+            //下一个结点
+            nowNode = nowNode->next;
         }
+    } else{
+        cout << "输入错误，请重新选择查询方式！" << endl;
     }
 }
 
@@ -182,24 +192,25 @@ void Manager::slsort(){
 void Manager::add(){
     ClassFriendCollection cm;
     cm.input();
+    if(nl.find(cm.getID()) != nullptr){
+        cout << "该校友已存在！" << endl;
+        return;
+    }
     nl.insertCM(cm);
 }
 
 //删除rmv函数
 void Manager::rmv(){
-    //定义一个字符串变量，存储要删除的姓名
-    string targetName;
-    cin >> targetName;
+    //定义一个字符串变量，存储要删除的学号
+    string targetID;
+    cin >> targetID;
     //调用链表的删除函数
-    nl.deleteCM(targetName);
+    nl.deleteCM(targetID);
 }
 
 void Manager::modify(){
-    cout << "setting: \n
-    1. 增加校友\n
-    2. 删除校友\n
-    0. back\n";
-    cout << "请选择："；
+    cout << "setting: \n1. 增加校友\n2. 删除校友\n0. back\n";
+    cout << "请选择：";
     int a;
     
     while(cin >> a){

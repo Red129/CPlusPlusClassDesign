@@ -44,7 +44,7 @@ void NodeList::insertCM(const ClassFriendCollection& cm){
 }
 
 //find函数
-Node* NodeList::find(const string& name) const{
+Node* NodeList::find(const string& ID) const{
     //定义一个进入循环的结点
     Node* nowNode = head;
     //遍历判断是否为空，即最后一个
@@ -52,7 +52,7 @@ Node* NodeList::find(const string& name) const{
         //如果找到了，返回结点指针
         // if(nowNode->data.name == name){
         //错误，name是父类的保护成员，无法直接访问
-        if(nowNode->data.getName() == name){
+        if(nowNode->data.getID() == ID){
             return nowNode;
         }
         //指向下一个结点
@@ -63,9 +63,9 @@ Node* NodeList::find(const string& name) const{
 }
 
 //deleteCM函数
-void NodeList::deleteCM(const string& name){
+void NodeList::deleteCM(const string& ID){
     //调用find函数
-    Node* flagNode = find(name);
+    Node* flagNode = find(ID);
     //如果找到了，删除结点
     if(flagNode != nullptr){
         //判断是否是头结点

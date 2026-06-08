@@ -7,7 +7,6 @@ System::System(){
 }
 
 void System::menu(){
-    string sInput;//stringInput
     cout << "***************************************\n";
     cout << "Welcom ! 欢迎使用校友录管理系统" << endl;
     cout << "****************************************" << endl;
@@ -33,7 +32,11 @@ void System::menu(){
     cout << "-------------------------------------------" << endl;	
 
     cout << "\n=============================================\n";
+}
+void System::run(){
+        string sInput;//stringInput
     do{
+        menu();
         cout << "请选择：";
 
         cin >> sInput;
@@ -77,12 +80,17 @@ void System::menu(){
 bool System::isNum(const string& s){
     bool flag = false;
     //是否只含数字
-    if(){
+    if(isdigit(s[0]) && s.size() == 1){
         flag = true;
     }
+    return flag;
 }
 
 int stringToInt(const string& s){
     //转为数字int
-    return ;
+    int num = 0;
+    for(int i = 0; i < s.size(); i++){
+        num = num * 10 + (s[i] - '0');
+    }
+    return num;
 }

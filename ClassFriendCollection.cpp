@@ -15,6 +15,10 @@ void ClassFriendCollection::input() {
     //调用父类输入函数
     Person::input();
 
+    cout << "请输入学号：";
+    cin >> ID;
+    checkID();
+
     cout << "请输入年级：(example:2025)";
     cin >> grade;
     checkGr();
@@ -110,6 +114,13 @@ void ClassFriendCollection::checkEmail()
 
         cout << "邮箱格式错误，请重新输入：";
         cin >> email;
+    }
+}
+
+void ClassFriendCollection::checkID(){
+    while(ID.empty() && !isNumber(ID)){
+        cout << "错误，请重新输入：";
+        cin >> ID;
     }
 }
 //检查是否是只含数字
