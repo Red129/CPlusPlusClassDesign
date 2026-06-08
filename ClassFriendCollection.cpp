@@ -139,6 +139,7 @@ bool ClassFriendCollection::isNumber(const string& s)
 }
 void ClassFriendCollection::display(){
     Person::display();
+    cout << "学号：" << ID << endl;
     cout << "年级：" << grade << endl;
     cout << "院系：" << department << endl;
     cout << "专业：" << major << endl;

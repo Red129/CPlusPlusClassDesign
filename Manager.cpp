@@ -174,15 +174,18 @@ void Manager::slsort(){
             Node* sortNowNd = sorted;
             //遍历比较已经排序的，进行插入
             //从第二个开始
-            while(sortNowNd->next != nullptr && cmps(sortNowNd, nowNode)){
-                //如果sort里比nowNode这个结点小，往后srot找，直到不符合
+            //while(sortNowNd->next != nullptr && cmps(sortNowNd, nowNode)){
+            while(sortNowNd->next != nullptr && cmps(sortNowNd->next, nowNode)){
+                //如果sort里比nowNode这个结点小，往后srot找，直到不符合的！前一个！
                 //sortNowNd后移
                 sortNowNd = sortNowNd->next;
             }
+            //插入
             //把nowNode后面和刚好大于的接上
             nowNode->next = sortNowNd->next;
             //再将这段拼进小的后面
             sortNowNd->next = nowNode;
+
         }
         //进入下一轮比较
         nowNode = tempNext;
