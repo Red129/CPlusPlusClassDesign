@@ -39,6 +39,16 @@ class Manager{
 		void add();
 		void rmv();
 		void modify();
+
+		//经ai建议，打算使用函数模板简化search（）
+		template<typename T>
+		//编译时，发生错误，经询问，模板实现也建议写在头文件里，
+		//编译器需要生成，但只看见了声明
+		bool hasa(const T& zone, const string& keyword){
+			return zone.find(keyword) != string::npos;
+		}
+
+		bool isNumber(const string& s);
 };
 
 

@@ -1,5 +1,6 @@
 #include "Manager.h"
 #include <fstream>
+#include <iomanip>
 //管理类
 
 Manager::Manager(){}
@@ -68,16 +69,25 @@ void Manager::staDisplay(){
     //读入筛选条件
     string flag;
     int count = 0;
-    cout << "请输入筛选条件（年级/院系/专业/班级）：" << endl;
+     cout << "请输入筛选条件（性别/年级/院系/专业/班级）：" << endl;
     cin >> flag;
+    while(flag.empty() || (flag != "性别" && flag != "年级" && flag != "院系" && flag != "专业" && flag != "班级")){
+        cout << "输入错误，请重新输入：";
+        cin >> flag;
+    }
     string keywords;
     cout << "请输入关键词：";
     cin >> keywords;
+    while(keywords.empty()){
+        cout << "输入错误，请重新输入：";
+        cin >> keywords;
+    }
     //定义一个结点指针，遍历链表
     Node* nowNode = nl.getHead();
     while(nowNode != nullptr){
         //根据条件筛选并展示
-        if((flag == "年级" && nowNode->data.getGrade() == keywords) ||
+        if( (flag == "性别" && nowNode->data.getSex() == keywords) ||
+        (flag == "年级" && nowNode->data.getGrade() == keywords) ||
         (flag == "院系" && nowNode->data.getDepartment() == keywords) ||
         (flag == "专业" && nowNode->data.getMajor() == keywords) || 
         (flag == "班级" && nowNode->data.getClassNum() == keywords)){
@@ -88,18 +98,30 @@ void Manager::staDisplay(){
         //下一个结点
         nowNode = nowNode->next;
     }
-    cout << "以上是与" << flag << "有关的，共查找到" << count << "条有关信息\n";
+    cout << "以上是与" << flag << "有关的，共统计到" << count << "条有关信息\n";
 
 }
 
 //查询
 void Manager::search(){
-    //分流，模糊查询和精确查询
     int t;
-    cout << "请选择查询方式：\n1. 模糊查询 \n2. 精确查询\n 0. 退出" << endl;
-    cin >> t;
+    while(true){
+        //分流，模糊查询和精确查询
+        cout << "请选择查询方式：\n1. 模糊查询 \n2. 精确查询\n 0. 退出" << endl;
+        cin >> t;
+        //解决随便输入问题
+        if(cin.fail()){
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "输入错误！" << endl;
+            continue;
+        }
+        cin.ignore(1000, '\n');
+        break;
+        
+    }
     string keyword;
-    
+    bool flag = false;
     //定义一个结点指针，遍历链表
     Node* nowNode = nl.getHead();
         //模糊查询，包含关系
@@ -107,21 +129,37 @@ void Manager::search(){
         cout << "请输入查询关键词：" << endl;
         cin >> keyword;
         while(nowNode != nullptr){
-            if(nowNode->data.getName().find(keyword) != string::npos ||
-            nowNode->data.getGrade().find(keyword) != string::npos ||
-            nowNode->data.getDepartment().find(keyword) != string::npos ||
-            nowNode->data.getMajor().find(keyword) != string::npos ||
-            nowNode->data.getClassNum().find(keyword) != string::npos ||
-            nowNode->data.getAddress().find(keyword) != string::npos ||
-            nowNode->data.getCompany().find(keyword) != string::npos ||
-            nowNode->data.getPhone().find(keyword) != string::npos ||
-            nowNode->data.getQQ().find(keyword) != string::npos ||
-            nowNode->data.getEmail().find(keyword) != string::npos){
+            // if(nowNode->data.getName().find(keyword) != string::npos ||
+            // nowNode->data.getGrade().find(keyword) != string::npos ||
+            // nowNode->data.getDepartment().find(keyword) != string::npos ||
+            // nowNode->data.getMajor().find(keyword) != string::npos ||
+            // nowNode->data.getClassNum().find(keyword) != string::npos ||
+            // nowNode->data.getAddress().find(keyword) != string::npos ||
+            // nowNode->data.getCompany().find(keyword) != string::npos ||
+            // nowNode->data.getPhone().find(keyword) != string::npos ||
+            // nowNode->data.getQQ().find(keyword) != string::npos ||
+            // nowNode->data.getEmail().find(keyword) != string::npos){
+            //     nowNode->data.display();
+            if(hasa(nowNode->data.getName(),keyword)||
+            hasa(nowNode->data.getSex(),keyword)||
+            hasa(nowNode->data.getGrade(),keyword)||
+            hasa(nowNode->data.getDepartment(),keyword)||
+            hasa(nowNode->data.getMajor(),keyword)||
+            hasa(nowNode->data.getClassNum(),keyword)||
+            hasa(nowNode->data.getAddress(),keyword)||
+            hasa(nowNode->data.getCompany(),keyword)||
+            hasa(nowNode->data.getPhone(),keyword)||
+            hasa(nowNode->data.getQQ(),keyword)||
+            hasa(nowNode->data.getEmail(),keyword)){
+                flag = true;
                 nowNode->data.display();
                 cout << "-----------------------------" << endl;
             }
             //下一个结点
             nowNode = nowNode->next;
+        }
+        if(!flag){
+            cout << "未找到符合条件的校友信息！" << endl;
         }
     }else if(t ==2){
         //精确查找，完全匹配
@@ -130,11 +168,15 @@ void Manager::search(){
         cin >> keyword;
         while(nowNode != nullptr){
             if(nowNode->data.getName() == keyword || nowNode->data.getID() == keyword){
+                flag = true;
                 nowNode->data.display();
                 cout << "-----------------------------" << endl;
             }
             //下一个结点
             nowNode = nowNode->next;
+        }
+        if(!flag){
+            cout << "未找到符合条件的校友信息！" << endl;
         }
     }else if(t ==0){
         return;
@@ -211,19 +253,30 @@ void Manager::rmv(){
     //定义一个字符串变量，存储要删除的学号
     string targetID;
     cout << "请输入要删除的校友的学号：";
-    cin >> targetID;
+    while(targetID.empty() || !isNumber(targetID)){
+        cout << "错误，请重新输入：";
+        cin >> targetID;
+    }
     //调用链表的删除函数
     nl.deleteCM(targetID);
 }
 
 void Manager::modify(){
     cout << "setting: \n1. 增加校友\n2. 删除校友\n0. back\n";
-    cout << "请选择：";
+    
     int a;
 
     while(true)
     {
+        cout << "请选择：";
         cin >> a;
+        //解决乱输入
+        if(cin.fail()){
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "输入错误，请重新输入！\n";
+            continue;
+        }
         switch(a)
         {
             case 1:
@@ -245,16 +298,54 @@ void Manager::modify(){
 
 void Manager::slDisplay(){
     char choice;
-    cin >> choice;
+    while(true){
+        cin >> choice;
+        //乱输入
+        if(cin.fail()){
+            cin.clear();
+            cin.ignore(1000, '\n');
+            cout << "错误，请重新输入！" << endl;
+            continue;
+        }
+        break;
+    }
     if(choice == 'y' || choice == 'Y'){
         if(nl.getHead() == nullptr){return;}
         Node* nowNode = nl.getHead();
-        cout << "|姓名|性别|生日|学号|年级|院系|专业|班级|地址|公司|电话|QQ号|邮箱|\n";
+        cout << "======================================================================================================================================\n";
+        //cout << "|姓名|性别|生日|学号|年级|院系|专业|班级|地址|公司|电话|QQ号|邮箱|\n";
+        //后面考虑了对齐，重写
+        cout << "|" 
+            << left 
+            << setw(8) << "姓名" << "|"
+            << setw(4) << "性别" << "|" 
+            << setw(10) << "生日" << "|" 
+            << setw(12) << "学号" << "|" 
+            << setw(4) << "届级" << "|" 
+            << setw(16) << "院校" << "|" 
+            << setw(14) << "专业" << "|" 
+            << setw(4) << "班级" << "|" 
+            << setw(10) << "现居地址" << "|" 
+            << setw(12) << "公司" << "|" 
+            << setw(11) << "电话" << "|" 
+            << setw(12) << "QQ" << "|" 
+            << setw(18) << "邮箱" << "|" << endl;
+        cout << "======================================================================================================================================\n";
         while(nowNode != nullptr){
             cout << nowNode->data;
             nowNode = nowNode->next;
         }
     }else if(choice == 'n' || choice == 'N'){
+    }else{
+        cout << "错误，请重新进入！" << endl;
     }
     return;
+}
+
+bool Manager::isNumber(const string& s)
+{
+    for(char c : s)
+        if(!isdigit(c)) return false;
+
+    return true;
 }

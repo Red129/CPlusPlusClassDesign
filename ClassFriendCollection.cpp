@@ -1,6 +1,8 @@
 #include "ClassFriendCollection.h"
 #include <sstream>
 //写流对象时报错了，忘记加了
+#include <iomanip>
+//实现重载时加上
 
 //校友录类的实现
 
@@ -183,9 +185,21 @@ void ClassFriendCollection::fromStringLine(string line){
 
 //重载的实现
 ostream& operator<<(ostream& out, const ClassFriendCollection& cm){
-    cout << "|" << cm.getName() << "|" << cm.getSex() << "|" << cm.getBirthday() << "|" << cm.getID() << 
-    "|" << cm.getGrade() << "|" << cm.getDepartment() << "|" << cm.getMajor() << "|" << cm.getClassNum() << "|"
-    << cm.getAddress() << "|" << cm.getCompany() << "|" 
-    << cm.getPhone() << "|" << cm.getQQ() << "|" << cm.getEmail() << "|" << endl;
+    out << "|" 
+    << left 
+    << setw(8) << cm.getName() << "|"
+    << setw(4) << cm.getSex() << "|" 
+    << setw(10) << cm.getBirthday() << "|" 
+    << setw(12) << cm.getID() << "|" 
+    << setw(4) << cm.getGrade() << "|" 
+    << setw(16) << cm.getDepartment() << "|" 
+    << setw(14) << cm.getMajor() << "|" 
+    << setw(4) << cm.getClassNum() << "|" 
+    << setw(10) << cm.getAddress() << "|" 
+    << setw(12) << cm.getCompany() << "|" 
+    << setw(11) << cm.getPhone() << "|" 
+    << setw(12) << cm.getQQ() << "|" 
+    << setw(18) << cm.getEmail() << "|" << endl;
+    out << "======================================================================================================================================\n";
     return out;
 }
