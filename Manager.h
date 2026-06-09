@@ -39,6 +39,7 @@ class Manager{
 		void add();
 		void rmv();
 		void modify();
+		void setting();
 
 		//经ai建议，打算使用函数模板简化search（）
 		template<typename T>

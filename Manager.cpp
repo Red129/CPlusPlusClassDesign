@@ -107,7 +107,7 @@ void Manager::search(){
     int t;
     while(true){
         //分流，模糊查询和精确查询
-        cout << "请选择查询方式：\n1. 模糊查询 \n2. 精确查询\n 0. 退出" << endl;
+        cout << "请选择查询方式：\n1. 模糊查询 \n2. 精确查询\n0. 退出" << endl;
         cin >> t;
         //解决随便输入问题
         if(cin.fail()){
@@ -116,7 +116,6 @@ void Manager::search(){
             cout << "输入错误！" << endl;
             continue;
         }
-        cin.ignore(1000, '\n');
         break;
         
     }
@@ -247,12 +246,37 @@ void Manager::add(){
     }
     nl.insertCM(cm);
 }
+//modify函数
+void Manager::modify(){
+    //
+    string targetID;
+    cout << "请输入要修改的校友的学号：";
+    cin >> targetID;
+    while(targetID.empty() || !isNumber(targetID)){
+        cout << "错误，请重新输入：";
+        cin >> targetID;
+    }
+    Node* target = nl.find(targetID);
+    if(target == nullptr){
+        cout << "未找到该校友！\n";
+        return;
+    }
+
+    cout << "-----------------------------" << endl;
+    target->data.display();
+    cout << "-----------------------------" << endl;
+
+    nl.deleteCM(targetID);
+    cout << "请进行新的信息填写：" << endl;
+    add();
+}
 
 //删除rmv函数
 void Manager::rmv(){
     //定义一个字符串变量，存储要删除的学号
     string targetID;
     cout << "请输入要删除的校友的学号：";
+    cin >> targetID;
     while(targetID.empty() || !isNumber(targetID)){
         cout << "错误，请重新输入：";
         cin >> targetID;
@@ -261,8 +285,8 @@ void Manager::rmv(){
     nl.deleteCM(targetID);
 }
 
-void Manager::modify(){
-    cout << "setting: \n1. 增加校友\n2. 删除校友\n0. back\n";
+void Manager::setting(){
+    cout << "setting: \n1. 增加校友\n2. 删除校友\n3. 修改校友\n0. back\n";
     
     int a;
 
@@ -285,6 +309,10 @@ void Manager::modify(){
 
             case 2:
                 rmv();
+                return;
+
+            case 3:
+                modify();
                 return;
 
             case 0:

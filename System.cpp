@@ -92,7 +92,7 @@ void System::run(){
                     break;
                 case 2://设置
                     if(getRole() == 1){
-                        manager.modify();
+                        manager.setting();
                         cout << "Finished!" << endl;
                     }else if(getRole() == 0){
                         cout << "你无权使用该功能！";
