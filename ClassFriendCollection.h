@@ -26,10 +26,7 @@ class ClassFriendCollection : public Person {
 	public:
 		//构造函数
 		ClassFriendCollection();
-		// ClassFriendCollection(const string& n, const string& s, const string& b,
-		// 	const string& g, const string& d, const string& m, const string& c,
-		// 	const string& a, const string& co, 
-		// 	const string& p, const string& q, const string& e);
+
 		~ClassFriendCollection();
 
 		// 设置输入
